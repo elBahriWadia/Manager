@@ -8,6 +8,7 @@ public class SupplyChain {
     private Company company1;
     private Company company2;
     private List<LogisticsNetwork> logisticsNetworks;
+    private int orderSize;
 
     public SupplyChain() {}
 
@@ -23,6 +24,14 @@ public class SupplyChain {
 
     public Company getCompany2() {
         return company2;
+    }
+
+    public int getOrderSize() {
+        return orderSize;
+    }
+
+    public void setOrderSize(int orderSize) {
+        this.orderSize = orderSize;
     }
 
     public List<LogisticsNetwork> getLogisticsNetworks() {
@@ -93,4 +102,56 @@ public class SupplyChain {
 
     }
 
+    public void executeDelivery() {
+        if (orderSize <= 0) return;
+
+        int company1TransitStock = 0;
+        for (Factory f : company1.getFactoryList()) {
+            company1TransitStock += f.getTransitStock();
+        }
+
+        int company2TransitStock = 0;
+        for (Factory f : company2.getFactoryList()) {
+            company2TransitStock += f.getTransitStock();
+        }
+
+        Company supplier;
+        Company receiver;
+
+        if (company1TransitStock >= company2TransitStock) {
+            supplier = company1;
+            receiver = company2;
+        } else {
+            supplier = company2;
+            receiver = company1;
+        }
+
+        int totalDelivered = 0;
+        for (Factory f : supplier.getFactoryList()) {
+            if (totalDelivered >= orderSize) break;
+            int available = f.getTransitStock();
+            if (available <= 0) continue;
+            int toDeliver = Math.min(available, orderSize - totalDelivered);
+            f.setTransitStock(f.getTransitStock() - toDeliver);
+
+            Factory receiverFactory = receiver.getFactoryList().get(0);
+            receiverFactory.setTransitStock(receiverFactory.getTransitStock() + toDeliver);
+            totalDelivered += toDeliver;
+        }
+    }
+
+    public String deliveryStatus() {
+
+        Company receiver;
+        if (company1.currentProductionCapacity() <= company2.currentProductionCapacity()) {
+            receiver = company1;
+        } else {
+            receiver = company2;
+        }
+
+        if (receiver.getFactoryList().isEmpty()) return "INEFFICIENT";
+
+        int totalTransit = receiver.getFactoryList().get(0).getTransitStock();
+        return totalTransit >= orderSize ? "EFFICIENT" : "INEFFICIENT";
+    }
 }

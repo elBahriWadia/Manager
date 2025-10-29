@@ -40,7 +40,7 @@ public class SupplyChainBuilder {
     }
 
     public SupplyChainBuilder setOrderSize(int orderSize) {
-
+        supplyChain.setOrderSize(orderSize);
         return this;
     }
 
