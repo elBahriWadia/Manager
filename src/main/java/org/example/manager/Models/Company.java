@@ -58,12 +58,7 @@ public class Company {
         int totalStock = 0;
         if (factoryList != null) {
             for (Factory factory : factoryList) {
-                List<Warehouse> warehouses = factory.getWarehouses();
-                if (warehouses != null) {
-                    for (Warehouse warehouse : warehouses) {
-                        totalStock += warehouse.getStock();
-                    }
-                }
+                totalStock += factory.currentProductionCapacity();
             }
         }
         return totalStock;

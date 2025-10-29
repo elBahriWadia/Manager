@@ -63,5 +63,15 @@ public class Factory {
         return report.toString();
     }
 
+    public int currentProductionCapacity() {
+        int totalStock = 0;
+        if (warehouses != null) {
+            for (Warehouse warehouse : warehouses) {
+                totalStock += warehouse.getStock();
+            }
+        }
+        return totalStock;
+    }
+
 
 }
