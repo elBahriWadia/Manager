@@ -40,6 +40,28 @@ public class Factory {
         transitStock = TransitStock;
     }
 
+    public String report() {
+        StringBuilder report = new StringBuilder();
+        report.append(country.charAt(0)).append(":<");
+        if (warehouses != null) {
+            for (int i = 0; i < warehouses.size(); i++) {
+                Warehouse warehouse = warehouses.get(i);
+                int id = i + 1;
+
+                report.append(country.charAt(0))
+                        .append("e").append(id)
+                        .append(":")
+                        .append(warehouse.getStock())
+                        .append("-")
+                        .append(warehouse.getEmployees());
+                if (id != warehouses.size()) {
+                    report.append(",");
+                }
+            }
+        }
+        report.append(">");
+        return report.toString();
+    }
 
 
 }

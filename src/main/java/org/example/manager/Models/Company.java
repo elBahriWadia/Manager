@@ -43,25 +43,7 @@ public class Company {
         if (factoryList != null) {
             for (int j = 0; j < factoryList.size(); j++) {
                 Factory factory = factoryList.get(j);
-                report.append(factory.getCountry().charAt(0)).append(":<");
-                List<Warehouse> warehouses = factory.getWarehouses();
-                if (warehouses != null) {
-                    for (int i = 0; i < warehouses.size(); i++) {
-                        Warehouse warehouse = warehouses.get(i);
-                        int id = i + 1;
-
-                        report.append(factory.getCountry().charAt(0))
-                                .append("e").append(id)
-                                .append(":")
-                                .append(warehouse.getStock())
-                                .append("-")
-                                .append(warehouse.getEmployees());
-                        if (id != warehouses.size()) {
-                            report.append(",");
-                        }
-                    }
-                }
-                report.append(">");
+                report.append(factory.report());
                 if (factory.getTransitStock() != 0) report.append("-").append(factory.getTransitStock());
                 if ((j+1) != factoryList.size()) {
                     report.append(", ");
